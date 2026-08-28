@@ -55,5 +55,11 @@ jobs:
             echo "변경 사항 없음"
           else
             git commit -m "➕ 채널 추가: $CHANNEL_INPUT"
-            git push
+            pushed=0
+            for i in 1 2 3; do
+              if git push; then pushed=1; break; fi
+              echo "⚠️  원격이 앞서 있습니다 — 다시 맞춰서 재시도 ($i/3)"
+              git pull --rebase
+            done
+            if [ "$pushed" != "1" ]; then echo "❌ 푸시하지 못했습니다"; exit 1; fi
           fi
