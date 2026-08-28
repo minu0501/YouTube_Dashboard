@@ -1,0 +1,9 @@
+# ⚠️ 절대 커밋 금지 — API 키 / OAuth 시크릿
+api_key_paramter.dm/
+*client_secret*.json
+*.key
+.env
+.env.*
+
+# macOS
+.DS_Store

@@ -1,0 +1,43 @@
+name: 매일 채널 기록
+
+on:
+  schedule:
+    # UTC 21:07 = 한국시간 다음날 06:07
+    # (정각은 전 세계 작업이 몰려 지연되므로 일부러 07분에 잡음)
+    - cron: '7 21 * * *'
+  workflow_dispatch:          # 필요할 때 손으로도 실행 가능
+
+# 같은 시간에 두 번 돌아 커밋이 충돌하는 걸 방지
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 채널 데이터 수집
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: node scripts/collect.mjs
+
+      - name: 변경분 커밋
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add channels.json data/
+          if git diff --staged --quiet; then
+            echo "변경 사항 없음 — 커밋 생략"
+          else
+            git commit -m "📊 $(TZ=Asia/Seoul date '+%Y-%m-%d') 채널 기록"
+            git push
+          fi
