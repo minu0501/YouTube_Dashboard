@@ -1,3 +1,11 @@
 {
-  "channels": []
+  "channels": [
+    {
+      "id": "UCd7G6HmcIX3UHjxcNCHd3fw",
+      "color": "#6366f1",
+      "addedAt": "2026-08-29",
+      "name": "암행역사",
+      "thumbnail": "https://yt3.ggpht.com/jCPyllVA-B5wHH0Ao1w7nzy4gAeQnoOcO5cOXv6CzopuL258YhnBhCyZbNVN8-drnvCpPPxQ5A=s240-c-k-c0x00ffffff-no-rj"
+    }
+  ]
 }
